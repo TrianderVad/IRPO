@@ -75,6 +75,7 @@ public class Simulator : MonoBehaviour
     public void addNode(String name, Node node)
     {
         allNodes.Add(name, node);
+        Debug.Log("Добавлена нода: " + allNodes[name].getName());
     }
 
     public void addRoad(String nodeFrom, String nodeTo, long sizeRoad)

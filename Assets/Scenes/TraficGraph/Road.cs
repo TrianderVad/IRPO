@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Road : MonoBehaviour
+public class Road
 {
     public List<Car> cars = new List<Car>(); // Список всех машин на дороге
     public List<Car> carsForDelete = new List<Car>(); // Список машин, которые надо удалить с дороги
@@ -18,7 +18,7 @@ public class Road : MonoBehaviour
 
     private void Start()
     {
-        attached = gameObject;
+        //attached = gameObject;
     }
 
     public Road(Node node1, Node node2, long roadSize)
@@ -60,7 +60,7 @@ public class Road : MonoBehaviour
             cars.Add(car);
         }
         Debug.Log("Добавлена машина: " + car);
-        Debug.Log("Список машин: " + cars.ToString());
+        Debug.Log("Количество машин: " + cars.Count);
     }
 
     public void printTime()
@@ -123,7 +123,7 @@ public class Road : MonoBehaviour
     {
         foreach (Car car in cars)
         {
-            Debug.Log(car.getX() + " (" + car.getSpeed() + ") ");
+            Debug.Log("Координата машины (ее скорость): " + car.getX() + " (" + car.getSpeed() + ") ");
         }
     }
 

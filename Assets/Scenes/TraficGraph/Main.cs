@@ -20,7 +20,7 @@ public class Main : MonoBehaviour
         simulator.addNode("3", new Node("3"));
 
         simulator.addRoad("1", "2", 1000);
-        //simulator.addRoad("2", "1", 2000);
-        simulator.addCar(new Car(0, 1, new String[] {"1", "2"}));
+        simulator.addRoad("3", "2", 2000);
+        simulator.addCar(new Car(0, 3, new String[] {"1", "2", "3"}));
     }   
 }
