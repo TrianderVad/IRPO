@@ -59,8 +59,8 @@ public class Road
             car.changeTime(Simulator.gameTime);
             cars.Add(car);
         }
-        Debug.Log("Добавлена машина: " + car);
-        Debug.Log("Количество машин: " + cars.Count);
+  //      Debug.Log("Добавлена машина: " + car);
+  //      Debug.Log("Количество машин: " + cars.Count);
     }
 
     public void printTime()
@@ -98,14 +98,14 @@ public class Road
             {
                 secondCar.changeSpeed(firstCar.getSpeed());
             }
-            long xForNewCar = firstCar.getX() - secondCar.getDistanceToNextCar() +
+            float xForNewCar = firstCar.getX() - secondCar.getDistanceToNextCar() +
                     (Math.Abs(firstCar.getSpeed() - secondCar.getSpeed())) * (Simulator.gameTime - secondCar.getTimeEnterRoad());
             cars[i].changeCoordinate(xForNewCar);
 
             firstCar = secondCar;
         }
 
-        printCoordinateCars();
+      //  printCoordinateCars();
     }
 
     public List<Car> getCarsForDelete()
@@ -126,5 +126,6 @@ public class Road
             Debug.Log("Координата машины (ее скорость): " + car.getX() + " (" + car.getSpeed() + ") ");
         }
     }
-
+    
+   
 }

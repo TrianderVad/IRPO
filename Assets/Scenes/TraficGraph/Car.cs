@@ -5,34 +5,34 @@ using UnityEngine;
 
 public class Car
 {
-    private long x; // Координата
-    private long speed; // Скорость
-    private long distanceToNextCar = 0; // Расстояние до следующей машины
-    private long timeEnterRoad;  // Время заезда на дорогу
+    private float x; // Координата
+    private float speed; // Скорость
+    private float distanceToNextCar = 0; // Расстояние до следующей машины
+    private float timeEnterRoad;  // Время заезда на дорогу
     private String[] path; // Путь
     private int current = 0; // Текущее местоположение, относительно массива path
-    public Car(long x, long speed, String[] path)
+    public Car(float x, float speed, String[] path)
     {
         this.x = x;
         this.speed = speed;
         this.path = path;
     }
 
-    public long getX()
+    public float getX()
     {
         return x;
     }
-    public long getSpeed()
+    public float getSpeed()
     {
         return speed;
     }
 
-    public long getDistanceToNextCar()
+    public float getDistanceToNextCar()
     {
         return distanceToNextCar;
     }
 
-    public long getTimeEnterRoad()
+    public float getTimeEnterRoad()
     {
         return timeEnterRoad;
     }
@@ -41,21 +41,21 @@ public class Car
         x = speed * (Simulator.gameTime - timeEnterRoad);
     }
 
-    public void changeTime(long time)
+    public void changeTime(float time)
     {
         timeEnterRoad = time;
     }
-    public void changeDistance(long newDistance)
+    public void changeDistance(float newDistance)
     {
         distanceToNextCar = newDistance;
     }
 
-    public void changeCoordinate(long x)
+    public void changeCoordinate(float x)
     {
         this.x = x;
     }
 
-    public void changeSpeed(long speed)
+    public void changeSpeed(float speed)
     {
         this.speed = speed;
     }

@@ -1,11 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Simulator : MonoBehaviour
 {
     public static long gameTime = 0;
+    public List<GameObject> GameObjects = new List<GameObject>();
+    private List<Car> cars = new List<Car>();
     public List<Road> roadsForRide = new List<Road>();
     public Dictionary<String, Node> allNodes = new Dictionary<string, Node>();
     public int speedSimulationRatio = 500;
@@ -20,7 +23,7 @@ public class Simulator : MonoBehaviour
     void FixedUpdate()
     {
         gameTime += 1;
-        Debug.Log("Игровое время: " + gameTime);
+       // Debug.Log("Игровое время: " + gameTime);
         if (roadsForRide.Count > 0)
         {
             updateCoords();
@@ -30,15 +33,21 @@ public class Simulator : MonoBehaviour
 
     public void addCar(Car car)
     {
+        GameObject thiscar = GameObjects[0];
+        CarMove carMove = thiscar.GetComponent<CarMove>();
+        carMove.setCar(car);
+        cars.Add(car);
         Road road = allNodes[car.getPath()[car.getCurrent()]].getRoadToNode(allNodes[car.getPath()[car.getCurrent() + 1]]);
         road.addCar(car);
         roadsForRide.Add(road);
         car.changeTime(gameTime);
         car.changeCoordinate(0);
-        Debug.Log("Добавлена машина " + car + " к дороге " + road);
-        Debug.Log("Число дорог для движения " + roadsForRide.Count);
+       
+        
+     //   Debug.Log("Добавлена машина " + car + " к дороге " + road);
+    //    Debug.Log("Число дорог для движения " + roadsForRide.Count);
     }
-
+ 
     public void updateCoords()
     {
         List<Road> roadForDelete = new List<Road>();
@@ -75,7 +84,7 @@ public class Simulator : MonoBehaviour
     public void addNode(String name, Node node)
     {
         allNodes.Add(name, node);
-        Debug.Log("Добавлена нода: " + allNodes[name].getName());
+     //   Debug.Log("Добавлена нода: " + allNodes[name].getName());
     }
 
     public void addRoad(String nodeFrom, String nodeTo, long sizeRoad)
@@ -92,7 +101,7 @@ public class Simulator : MonoBehaviour
 
     public void printAllNodes()
     {
-        Debug.Log("Список Nodes: " + allNodes.ToString());
+    //    Debug.Log("Список Nodes: " + allNodes.ToString());
     }
 
 }

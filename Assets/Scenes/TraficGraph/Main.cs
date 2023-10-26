@@ -13,14 +13,13 @@ public class Main : MonoBehaviour
 
     void Start()
     {
-        plane = GameObject.Find("Plane");
-        this.simulator = plane.GetComponent<Simulator>();
+        this.simulator = this.GetComponent<Simulator>();
         simulator.addNode("1", new Node("1"));
         simulator.addNode("2", new Node("2"));
         simulator.addNode("3", new Node("3"));
 
         simulator.addRoad("1", "2", 1000);
         simulator.addRoad("3", "2", 2000);
-        simulator.addCar(new Car(0, 3, new String[] {"1", "2", "3"}));
+        simulator.addCar(new Car(0, 0.1f, new String[] {"1", "2", "3"}));
     }   
 }
