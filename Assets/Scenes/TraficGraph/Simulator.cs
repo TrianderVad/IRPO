@@ -6,12 +6,13 @@ using UnityEngine;
 
 public class Simulator : MonoBehaviour
 {
-    public static long gameTime = 0;
+    public static long gameTime = 0;  // »гровое врем€, по которому высчитываютс€ координаты машин
+
     public List<GameObject> GameObjects = new List<GameObject>();
     private List<Car> cars = new List<Car>();
-    public List<Road> roadsForRide = new List<Road>();
-    public Dictionary<String, Node> allNodes = new Dictionary<string, Node>();
-    public int speedSimulationRatio = 500;
+    public List<Road> roadsForRide = new List<Road>(); // ƒороги, на которых есть машины, и на которых нужно производить движение в данный момент
+    public Dictionary<String, Node> allNodes = new Dictionary<string, Node>();  // —писок всех узлов на карте
+    //public int speedSimulationRatio = 500;
 
     // Start is called before the first frame update
     void Start()
@@ -23,7 +24,16 @@ public class Simulator : MonoBehaviour
     void FixedUpdate()
     {
         gameTime += 1;
-       // Debug.Log("»гровое врем€: " + gameTime);
+        if (gameTime%100 == 0)
+        {
+            Debug.Log("»гровое врем€: " + gameTime);
+        }
+
+        if (gameTime == 500)
+        {
+            addCar(new Car(0, 0.03f, new String[] { "1", "2", "3" }));
+        }
+
         if (roadsForRide.Count > 0)
         {
             updateCoords();
@@ -37,26 +47,29 @@ public class Simulator : MonoBehaviour
         CarMove carMove = thiscar.GetComponent<CarMove>();
         carMove.setCar(car);
         cars.Add(car);
+
+        // ѕолучаем дорогу, котора€ ведет к следующей точке маршрута добавленной машины
         Road road = allNodes[car.getPath()[car.getCurrent()]].getRoadToNode(allNodes[car.getPath()[car.getCurrent() + 1]]);
-        road.addCar(car);
-        roadsForRide.Add(road);
-        car.changeTime(gameTime);
-        car.changeCoordinate(0);
+        road.addCar(car); // ƒобавл€ем к этой дороге машину
+        roadsForRide.Add(road);  // » вносим эту дорогу в список дорог дл€ движени€
+        car.changeCoordinate(0);  // ќбнул€ем координату
        
         
-     //   Debug.Log("ƒобавлена машина " + car + " к дороге " + road);
+        Debug.Log("ƒобавлена машина " + car + " к дороге " + road);
     //    Debug.Log("„исло дорог дл€ движени€ " + roadsForRide.Count);
     }
  
+    // ќбновл€ет координаты всех машин на карте
     public void updateCoords()
     {
-        List<Road> roadForDelete = new List<Road>();
-        List<Car> carsForDelete = new List<Car>();
+        List<Road> roadForDelete = new List<Road>(); // ƒороги, на которых машины окончили движение
+        List<Car> carsForDelete = new List<Car>();  // ћашины, которые окончили движение на дороге
+
         foreach (Road road in roadsForRide)
         {
             if (road.hasCars())
             {
-                road.moveCars();
+                road.moveCars(); 
                 carsForDelete = road.getCarsForDelete();
             }
             else
@@ -64,10 +77,15 @@ public class Simulator : MonoBehaviour
                 roadForDelete.Add(road);
             }
         }
+
+        // ”бираем дороги, на которых больше нет машин
         if (roadForDelete.Count > 0)
         {
             foreach (Road road in roadForDelete) roadsForRide.Remove(road);
         }
+
+        // ”дал€ем машины, которые закончили свой путь
+        // »ли переносим их на другую дорогу
         if (carsForDelete.Count > 0)
         {
             foreach (Car car in carsForDelete)

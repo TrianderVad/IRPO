@@ -18,41 +18,29 @@ public class Car
         this.path = path;
     }
 
-    public float getX()
+    public void changeDistanceToNextCar(float newDistance)
     {
-        return x;
-    }
-    public float getSpeed()
-    {
-        return speed;
-    }
-
-    public float getDistanceToNextCar()
-    {
-        return distanceToNextCar;
+        distanceToNextCar = newDistance;
     }
 
     public float getTimeEnterRoad()
     {
         return timeEnterRoad;
     }
+
     public void changeCoordinate()
     {
         x = speed * (Simulator.gameTime - timeEnterRoad);
     }
 
-    public void changeTime(float time)
-    {
-        timeEnterRoad = time;
-    }
-    public void changeDistance(float newDistance)
-    {
-        distanceToNextCar = newDistance;
-    }
-
     public void changeCoordinate(float x)
     {
         this.x = x;
+    }
+
+    public void changeTime(float time)
+    {
+        timeEnterRoad = time;
     }
 
     public void changeSpeed(float speed)
@@ -75,15 +63,18 @@ public class Car
         return current;
     }
 
-    // Start is called before the first frame update
-    void Start()
+    public float getX()
     {
-        
+        return x;
+    }
+    public float getSpeed()
+    {
+        return speed;
     }
 
-    // Update is called once per frame
-    void Update()
+    public float getDistanceToNextCar()
     {
-        
+        return distanceToNextCar;
     }
+
 }

@@ -8,11 +8,13 @@ public class Road
 {
     public List<Car> cars = new List<Car>(); // Список всех машин на дороге
     public List<Car> carsForDelete = new List<Car>(); // Список машин, которые надо удалить с дороги
+    public float minDistance = 2;  // Минимальная дистанция между машинами
+
+    // Узлы, которые соединяет дорога
     public Node node1;
     public Node node2;
-    public long roadSize;
+    public long roadSize;  // Длина дороги
 
-    public bool drive = false;
 
     GameObject attached;
 
@@ -39,7 +41,7 @@ public class Road
             }
             else
             {
-                car.changeDistance(cars.Last().getX());
+                car.changeDistanceToNextCar(cars.Last().getX());
                 car.changeTime(Simulator.gameTime);
                 cars.Add(car);
             }
@@ -51,21 +53,16 @@ public class Road
         if (cars.Count == 0)
         {
             cars.Add(car);
-            car.changeTime(Simulator.gameTime);
+            car.changeTime(Simulator.gameTime); // Устанавливаем время въезда на дорогу
         }
         else
         {
-            car.changeDistance(cars.Last().getX());
+            car.changeDistanceToNextCar(cars.Last().getX());
             car.changeTime(Simulator.gameTime);
             cars.Add(car);
         }
   //      Debug.Log("Добавлена машина: " + car);
   //      Debug.Log("Количество машин: " + cars.Count);
-    }
-
-    public void printTime()
-    {
-        Debug.Log(Simulator.gameTime);
     }
 
     public void moveCars()
@@ -74,8 +71,10 @@ public class Road
         {
             return;
         }
+
         Car firstCar = cars.First();
 
+        // Если первая машина достигла конца дороги, то убираем ее и переназначаем firstCar
         if (firstCar.getX() == roadSize)
         {
             carsForDelete.Add(firstCar);
@@ -91,21 +90,35 @@ public class Road
 
         if (firstCar.getX() > roadSize) { firstCar.changeCoordinate(roadSize); }
 
+        float xForNewCar;
         for (int i = 1; i < cars.Count; i++)
         {
-            Car secondCar = cars[i];
-            if (secondCar.getX() + 40 > firstCar.getX())
+            Car currentCar = cars[i];
+            if (currentCar.getX() + minDistance > firstCar.getX())
             {
-                secondCar.changeSpeed(firstCar.getSpeed());
+                currentCar.changeSpeed(firstCar.getSpeed());
             }
-            float xForNewCar = firstCar.getX() - secondCar.getDistanceToNextCar() +
-                    (Math.Abs(firstCar.getSpeed() - secondCar.getSpeed())) * (Simulator.gameTime - secondCar.getTimeEnterRoad());
-            cars[i].changeCoordinate(xForNewCar);
 
-            firstCar = secondCar;
+            if (currentCar.getSpeed() == firstCar.getSpeed())
+            {
+                xForNewCar = firstCar.getX() - currentCar.getDistanceToNextCar();
+            }
+            else
+            {
+                //xForNewCar = firstCar.getX() - currentCar.getDistanceToNextCar() +
+                //      (Math.Abs(firstCar.getSpeed() - currentCar.getSpeed())) * (Simulator.gameTime - currentCar.getTimeEnterRoad());
+
+                xForNewCar = currentCar.getSpeed() * (Simulator.gameTime - currentCar.getTimeEnterRoad());
+            }
+
+            currentCar.changeCoordinate(xForNewCar);
+            currentCar.changeDistanceToNextCar(firstCar.getX() - currentCar.getX());
+
+
+            firstCar = currentCar;
         }
 
-      //  printCoordinateCars();
+        printCoordinateCars();
     }
 
     public List<Car> getCarsForDelete()
@@ -123,7 +136,11 @@ public class Road
     {
         foreach (Car car in cars)
         {
-            Debug.Log("Координата машины (ее скорость): " + car.getX() + " (" + car.getSpeed() + ") ");
+            if (Simulator.gameTime % 50 ==0)
+            {
+                Debug.Log("Координата машины (ее скорость): " + car.getX() + " (" + car.getSpeed() + ") ");
+            }
+          
         }
     }
     
